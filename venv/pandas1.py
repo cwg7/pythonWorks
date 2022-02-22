@@ -54,7 +54,22 @@ bool_series = df['total_bill'] > 40
 #simplified code
 #print(df[df['total_bill'] > 40])
 
+# Filter all males
 
+filterAllMales = df[df['sex'] == "Male"]
+#print(filterAllMales)
+
+# combining conditions
+
+combinedFilter = df[(df['total_bill'] > 30) & (df['sex'] == "Male")]
+#print(combinedFilter)
+
+weekendOnly = df[(df['day'] == 'Sun') | (df['day'] == 'Sat')]
+#print(weekendOnly)
+
+# Cleaner method to filter weekend values (isin method)
+options = ['Sun','Sat']
+#print(df[df['day'].isin(options)])
 
 
 

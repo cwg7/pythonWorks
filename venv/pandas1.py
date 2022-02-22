@@ -1,6 +1,11 @@
 import numpy as np
 import pandas as pd
 
+# This block of code allows for the entire Dataframe to be viewed upon printing dataframe output
+desired_width=320
+pd.set_option('display.width', desired_width)
+np.set_printoptions(linewidth=desired_width)
+pd.set_option('display.max_columns',10)
 
 ## Example
 
@@ -35,3 +40,21 @@ df = pd.read_csv('C:\\Users\\cwins\\Downloads\\UNZIP_FOR_NOTEBOOKS_FINAL (1)\\03
 
 df = df.set_index('Payment ID')
 #print(df)
+
+#refresh original dataframe
+
+df = pd.read_csv('C:\\Users\\cwins\\Downloads\\UNZIP_FOR_NOTEBOOKS_FINAL (1)\\03-Pandas\\tips.csv')
+#print(df)
+
+#Perform operations on data. Let's find instances of where 'total_bill' > 40
+
+bool_series = df['total_bill'] > 40
+#print(df[bool_series])
+
+#simplified code
+#print(df[df['total_bill'] > 40])
+
+
+
+
+

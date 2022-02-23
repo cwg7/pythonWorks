@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import timeit
 
 # This block of code allows for the entire Dataframe to be viewed upon printing dataframe output
 desired_width=320
@@ -38,3 +39,61 @@ print(df['yelp'])
 
 
 # How to use apply_method on multiple columns
+
+# Make a function that gauges how generous the tip was given the ratio tip/ total_bill
+# for simplicity, generous is 25% and above
+
+def quality(total_bill,tip):
+    if tip/total_bill > .25:
+        return "Generous"
+    else:
+        return "Other"
+
+# Here's how to apply this function to multiple columns
+
+tipQuality = df[['total_bill', 'tip']].apply(lambda df: quality(df['total_bill'], df['tip']), axis = 1)
+print(tipQuality)
+
+# Assign function to its own column
+
+df['tip_quality'] = tipQuality
+print(df)
+
+# Vectorize
+# The purpose of np.vectorize is to transform functions which are not num-py aware
+
+df['Quality'] = np.vectorize(quality)(df['total_bill'], df['tip'])
+
+# Demonstration of timeit
+
+# code snippet to be executed only once
+# Notice an 'r' was necessary before csv file path in order for this to execute properly
+
+import timeit
+setup = '''
+import numpy as np
+import pandas as pd
+
+df = pd.read_csv(r'C:\\Users\\cwins\\Downloads\\UNZIP_FOR_NOTEBOOKS_FINAL (1)\\03-Pandas\\tips.csv')
+def quality(total_bill,tip):
+    if tip/total_bill  > 0.25:
+        return "Generous"
+    else:
+        return "Other"
+'''
+
+# code snippet whose execution time is to be measured
+stmt_one = ''' 
+tipQuality = df[['total_bill', 'tip']].apply(lambda df: quality(df['total_bill'], df['tip']), axis = 1)
+'''
+
+stmt_two = '''
+df['Quality'] = np.vectorize(quality)(df['total_bill'], df['tip'])
+'''
+
+print("Lambda speed: " + str(timeit.timeit(setup = setup, stmt = stmt_one, number = 1000)))
+#print("\n")
+print("Vectorize speed: " + str(timeit.timeit(setup = setup, stmt = stmt_two, number = 1000)))
+
+# In this instance np.vectorize greatly outperformed the lambda
+

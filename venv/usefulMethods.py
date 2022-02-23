@@ -91,9 +91,95 @@ stmt_two = '''
 df['Quality'] = np.vectorize(quality)(df['total_bill'], df['tip'])
 '''
 
-print("Lambda speed: " + str(timeit.timeit(setup = setup, stmt = stmt_one, number = 1000)))
+#print("Lambda speed: " + str(timeit.timeit(setup = setup, stmt = stmt_one, number = 1000)))
 #print("\n")
-print("Vectorize speed: " + str(timeit.timeit(setup = setup, stmt = stmt_two, number = 1000)))
+#print("Vectorize speed: " + str(timeit.timeit(setup = setup, stmt = stmt_two, number = 1000)))
 
 # In this instance np.vectorize greatly outperformed the lambda
 
+
+
+df = pd.read_csv('C:\\Users\\cwins\\Downloads\\UNZIP_FOR_NOTEBOOKS_FINAL (1)\\03-Pandas\\tips.csv')
+
+# sorting methodologies
+
+# How to sort by columns
+# sort by tip ( low to high )
+
+#print(df.sort_values(['tip']))
+
+# tip by descending order
+
+#print(df.sort_values(['tip'], ascending= False))
+
+# sort by multiple columns
+
+# print(df.sort_values(['tip', 'size']))
+
+# How to get max value of bill column
+
+print(df['total_bill'].max())
+
+# How to get index of max value of bill column
+
+maxTotalBillIndex = df['total_bill'].idxmax()
+
+# How to return particular Series via passing in index
+print(df.iloc[maxTotalBillIndex])
+
+
+# values count method
+
+df['sex'].value_counts()
+
+# How to get different values of columns
+
+df['day'].unique()
+
+# How to count number of Different values in columns
+
+df['day'].nunique()
+
+# Replace method
+
+# replace 'females' with 'f' in sex column
+
+df['sex'].replace('Female', 'F')
+
+# Mapping method
+
+mymap = {'Female': 'F', 'Male': 'M'}
+
+df['sex'].map(mymap)
+
+
+# Duplicate rows
+
+simple_df = pd.DataFrame([1,2,2], ['a','b','c'])
+print(simple_df)
+print(simple_df.duplicated())
+
+# drop duplicates
+
+simple_df = simple_df.drop_duplicates()
+print(simple_df)
+
+# Between method call
+
+filterBetween = df[df['total_bill'].between(10,20,inclusive=True)]
+
+# 10 rows that had the largest tip
+
+df.nlargest(10,'tip')
+
+# 2 rows that had smallest tip
+
+df.nsmallest(2, 'tip')
+
+# sample 5 random rows of dataframe
+
+df.sample(5)
+
+# sample 10% of dataframe
+
+print(df.sample(frac = 0.1))
